@@ -1,0 +1,135 @@
+columns:
+  - Customer ID: object
+  - Gender: object
+  - Age: int
+  - Married: object
+  - Number of Dependents: int
+  - City: object
+  - Zip Code: int
+  - Latitude: float
+  - Longitude: float
+  - Number of Referrals: int
+  - Tenure in Months: int
+  - Offer: object
+  - Phone Service: object
+  - Avg Monthly Long Distance Charges: float
+  - Multiple Lines: object
+  - Internet Service: object
+  - Internet Type: object
+  - Avg Monthly GB Download: float
+  - Online Security: object
+  - Online Backup: object
+  - Device Protection Plan: object
+  - Premium Tech Support: object
+  - Streaming TV: object
+  - Streaming Movies: object
+  - Streaming Music: object
+  - Unlimited Data: object
+  - Contract: object
+  - Paperless Billing: object
+  - Payment Method: object
+  - Monthly Charge: float
+  - Total Charges: float
+  - Total Refunds: float
+  - Total Extra Data Charges: int
+  - Total Long Distance Charges: float
+  - Total Revenue: float
+  - Customer Status: object
+  - Churn Category: object
+  - Churn Reason: object
+
+numerical_columns:
+  - Age
+  - Number of Dependents
+  - Zip Code
+  - Latitude
+  - Longitude
+  - Number of Referrals
+  - Tenure in Months
+  - Avg Monthly Long Distance Charges
+  - Avg Monthly GB Download
+  - Monthly Charge
+  - Total Charges
+  - Total Refunds
+  - Total Extra Data Charges
+  - Total Long Distance Charges
+  - Total Revenue
+
+categorical_columns:
+# caltarget_columns:
+  - Customer ID
+  - Gender
+  - Married
+  - City
+  - Offer
+  - Phone Service
+  - Multiple Lines
+  - Internet Service
+  - Internet Type
+  - Online Security
+  - Online Backup
+  - Device Protection Plan
+  - Premium Tech Support
+  - Streaming TV
+  - Streaming Movies
+  - Streaming Music
+  - Unlimited Data
+  - Contract
+  - Paperless Billing
+  - Payment Method
+  - Customer Status
+  - Churn Category
+  - Churn Reason
+
+drop_columns: Customer ID, City, Zip Code, Latitude, Longitude,Total Refunds, Total Extra Data Charges, Total Long Distance Charges,Total Revenue, Churn Category, Churn Reason
+
+# for data transformation
+num_feature:
+  - Gender
+  - Married
+  - Offer
+  - Phone Service
+  - Multiple Lines
+  - Internet Service
+  - Internet Type
+  - Online Security
+  - Online Backup
+  - Device Protection Plan
+  - Premium Tech Support
+  - Streaming TV
+  - Streaming Movies
+  - Streaming Music
+  - Unlimited Data
+  - Contract
+  - Paperless Billing
+  - Payment Method
+  - Customer Status
+
+mm_columns:
+  - Gender
+  - Married
+  - Offer
+  - Phone Service
+  - Multiple Lines
+  - Internet Service
+  - Internet Type
+  - Online Security
+  - Online Backup
+  - Device Protection Plan
+  - Premium Tech Support
+  - Streaming TV
+  - Streaming Movies
+  - Streaming Music
+  - Unlimited Data
+  - Contract
+  - Paperless Billing
+  - Payment Method
+  - Customer Status
+  - Age
+  - Number of Dependents
+  - Number of Referrals
+  - Tenure in Months
+  - Avg Monthly Long Distance Charges
+  - Avg Monthly GB Download
+  - Monthly Charge
+  - Total Charges
