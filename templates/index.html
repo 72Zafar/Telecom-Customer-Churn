@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Telecom Customer Churn Prediction</title>
+    <link rel="stylesheet" href="{{ url_for('static', path='css/style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <!-- Header Section -->
+        <header class="header">
+            <div class="header-content">
+                <h1 class="app-title">Telecom Customer Churn Prediction</h1>
+                <p class="app-subtitle">Predict customer churn likelihood based on service usage and demographics</p>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Navigation Bar -->
+            <nav class="navbar">
+                <button class="nav-btn active" onclick="switchTab('form')">Predict Churn</button>
+                <button class="nav-btn" onclick="switchTab('info')">How It Works</button>
+                <button class="nav-btn" onclick="trainModel()">Train Model</button>
+            </nav>
+
+            <!-- Form Tab -->
+            <div id="form" class="tab-content active">
+                <section class="form-section">
+                    <h2>Customer Information</h2>
+                    <form id="churnForm" onsubmit="handleSubmit(event)">
+                        
+                        <!-- Demographics Section -->
+                        <fieldset class="form-fieldset">
+                            <legend>Demographics</legend>
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <label for="Gender">Gender:</label>
+                                    <select id="Gender" name="Gender" required>
+                                        <option value="">Select Gender</option>
+                                        <option value="0">Male</option>
+                                        <option value="1">Female</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="Age">Age:</label>
+                                    <input type="number" id="Age" name="Age" min="18" max="100" required>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="Married">Married:</label>
+                                    <select id="Married" name="Married" required>
+                                        <option value="">Select Status</option>
+                                        <option value="0">No</option>
+                                        <option value="1">Yes</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="Number_of_Dependents">Number of Dependents:</label>
+                                    <input type="number" id="Number_of_Dependents" name="Number_of_Dependents" min="0" max="10" required>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="Number_of_Referrals">Number of Referrals:</label>
+                                    <input type="number" id="Number_of_Referrals" name="Number_of_Referrals" min="0" max="10" required>
+                                </div>
+                            </div>
+                        </fieldset>
+
+                        <!-- Service Subscription Section -->
+                        <fieldset class="form-fieldset">
+                            <legend>Service Subscriptions</legend>
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <label for="Phone_Service">Phone Service:</label>
+                                    <select id="Phone_Service" name="Phone_Service" required>
+                                        <option value="">Select Option</option>
+                                        <option value="0">No</option>
+                                        <option value="1">Yes</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="Multiple_Lines">Multiple Lines:</label>
+                                    <select id="Multiple_Lines" name="Multiple_Lines" required>
+                                        <option value="">Select Option</option>
+                                        <option value="0">No</option>
+                                        <option value="1">Yes</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="Internet_Service">Internet Service:</label>
+                                    <select id="Internet_Service" name="Internet_Service" required>
+                                        <option value="">Select Option</option>
+                                        <option value="0">No</option>
+                                        <option value="1">Yes</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="Internet_Type">Internet Type:</label>
+                                    <select id="Internet_Type" name="Internet_Type" required>
+                                        <option value="">Select Type</option>
+                                        <option value="0">Fiber Optic</option>
+                                        <option value="1">Cable</option>
+                                        <option value="2">DSL</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="Online_Security">Online Security:</label>
+                                    <select id="Online_Security" name="Online_Security" required>
+                                        <option value="">Select Option</option>
+                                        <option value="0">No</option>
+                                        <option value="1">Yes</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="Online_Backup">Online Backup:</label>
+                                    <select id="Online_Backup" name="Online_Backup" required>
+                                        <option value="">Select Option</option>
+                                        <option value="0">No</option>
+                                        <option value="1">Yes</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="Device_Protection_Plan">Device Protection Plan:</label>
+                                    <select id="Device_Protection_Plan" name="Device_Protection_Plan" required>
+                                        <option value="">Select Option</option>
+                                        <option value="0">No</option>
+                                        <option value="1">Yes</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="Premium_Tech_Support">Premium Tech Support:</label>
+                                    <select id="Premium_Tech_Support" name="Premium_Tech_Support" required>
+                                        <option value="">Select Option</option>
+                                        <option value="0">No</option>
+                                        <option value="1">Yes</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="Streaming_TV">Streaming TV:</label>
+                                    <select id="Streaming_TV" name="Streaming_TV" required>
+                                        <option value="">Select Option</option>
+                                        <option value="0">No</option>
+                                        <option value="1">Yes</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="Streaming_Movies">Streaming Movies:</label>
+                                    <select id="Streaming_Movies" name="Streaming_Movies" required>
+                                        <option value="">Select Option</option>
+                                        <option value="0">No</option>
+                                        <option value="1">Yes</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="Streaming_Music">Streaming Music:</label>
+                                    <select id="Streaming_Music" name="Streaming_Music" required>
+                                        <option value="">Select Option</option>
+                                        <option value="0">No</option>
+                                        <option value="1">Yes</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="Unlimited_Data">Unlimited Data:</label>
+                                    <select id="Unlimited_Data" name="Unlimited_Data" required>
+                                        <option value="">Select Option</option>
+                                        <option value="0">No</option>
+                                        <option value="1">Yes</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </fieldset>
+
+                        <!-- Account Details Section -->
+                        <fieldset class="form-fieldset">
+                            <legend>Account Details</legend>
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <label for="Contract">Contract Type:</label>
+                                    <select id="Contract" name="Contract" required>
+                                        <option value="">Select Contract</option>
+                                        <option value="0">Month-to-Month</option>
+                                        <option value="1">One Year</option>
+                                        <option value="2">Two Year</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="Paperless_Billing">Paperless Billing:</label>
+                                    <select id="Paperless_Billing" name="Paperless_Billing" required>
+                                        <option value="">Select Option</option>
+                                        <option value="0">No</option>
+                                        <option value="1">Yes</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="Payment_Method">Payment Method:</label>
+                                    <select id="Payment_Method" name="Payment_Method" required>
+                                        <option value="">Select Method</option>
+                                        <option value="0">Credit Card</option>
+                                        <option value="1">Bank Transfer</option>
+                                        <option value="2">Check</option>
+                                        <option value="3">Electronic Check</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="Offer">Offer:</label>
+                                    <select id="Offer" name="Offer" required>
+                                        <option value="">Select Offer</option>
+                                        <option value="0">No Offer</option>
+                                        <option value="1">Offer A</option>
+                                        <option value="2">Offer B</option>
+                                        <option value="3">Offer C</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="Tenure_in_Months">Tenure (Months):</label>
+                                    <input type="number" id="Tenure_in_Months" name="Tenure_in_Months" min="0" max="72" required>
+                                </div>
+                            </div>
+                        </fieldset>
+
+                        <!-- Charges Section -->
+                        <fieldset class="form-fieldset">
+                            <legend>Charges Information</legend>
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <label for="Avg_Monthly_Long_Distance_Charges">Avg Monthly Long Distance Charges ($):</label>
+                                    <input type="number" id="Avg_Monthly_Long_Distance_Charges" name="Avg_Monthly_Long_Distance_Charges" step="0.01" min="0" required>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="Avg_Monthly_GB_Download">Avg Monthly GB Download:</label>
+                                    <input type="number" id="Avg_Monthly_GB_Download" name="Avg_Monthly_GB_Download" step="0.01" min="0" required>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="Monthly_Charge">Monthly Charge ($):</label>
+                                    <input type="number" id="Monthly_Charge" name="Monthly_Charge" step="0.01" min="0" required>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="Total_Charges">Total Charges ($):</label>
+                                    <input type="number" id="Total_Charges" name="Total_Charges" step="0.01" min="0" required>
+                                </div>
+                            </div>
+                        </fieldset>
+
+                        <!-- Action Buttons -->
+                        <div class="form-actions">
+                            <button type="submit" class="btn btn-primary">Predict Churn</button>
+                            <button type="reset" class="btn btn-secondary">Clear Form</button>
+                        </div>
+                    </form>
+
+                    <!-- Result Display -->
+                    <div id="resultContainer" class="result-container" style="display: none;">
+                        <div id="resultCard" class="result-card"></div>
+                    </div>
+
+                    <!-- Loading Spinner -->
+                    <div id="loadingSpinner" class="loading-spinner" style="display: none;">
+                        <div class="spinner"></div>
+                        <p>Making prediction...</p>
+                    </div>
+                </section>
+            </div>
+
+            <!-- Info Tab -->
+            <div id="info" class="tab-content">
+                <section class="info-section">
+                    <h2>How This Model Works</h2>
+                    <div class="info-card">
+                        <h3>What is Customer Churn?</h3>
+                        <p>Customer churn refers to the rate at which customers stop using your services. In the telecom industry, predicting churn helps identify customers at risk so you can take proactive measures to retain them.</p>
+                    </div>
+
+                    <div class="info-card">
+                        <h3>Model Features</h3>
+                        <p>This prediction model analyzes:</p>
+                        <ul>
+                            <li><strong>Demographics:</strong> Age, marital status, dependents, referrals</li>
+                            <li><strong>Services:</strong> Phone, internet, streaming, security, and backup services</li>
+                            <li><strong>Account:</strong> Contract type, tenure, payment method, billing preferences</li>
+                            <li><strong>Financial:</strong> Monthly charges, total charges, data usage patterns</li>
+                        </ul>
+                    </div>
+
+                    <div class="info-card">
+                        <h3>Prediction Output</h3>
+                        <p>The model returns one of two predictions:</p>
+                        <ul>
+                            <li><strong>Churn:</strong> Customer is likely to leave the service</li>
+                            <li><strong>Stay:</strong> Customer is likely to continue the service</li>
+                        </ul>
+                    </div>
+
+                    <div class="info-card">
+                        <h3>How to Use</h3>
+                        <ol>
+                            <li>Fill in all customer information in the form</li>
+                            <li>Click "Predict Churn" button</li>
+                            <li>View the prediction result and confidence metrics</li>
+                            <li>Use insights to develop retention strategies</li>
+                        </ol>
+                    </div>
+                </section>
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p>&copy; 2025 Telecom Customer Churn Prediction System. All rights reserved.</p>
+        </footer>
+    </div>
+
+    <script>
+        // Tab switching functionality
+        function switchTab(tabName) {
+            // Hide all tab contents
+            const tabs = document.querySelectorAll('.tab-content');
+            tabs.forEach(tab => tab.classList.remove('active'));
+
+            // Deactivate all nav buttons
+            const navBtns = document.querySelectorAll('.nav-btn');
+            navBtns.forEach(btn => btn.classList.remove('active'));
+
+            // Show selected tab and activate button
+            document.getElementById(tabName).classList.add('active');
+            event.target.classList.add('active');
+        }
+
+        // Form submission handler
+        async function handleSubmit(event) {
+            event.preventDefault();
+
+            // Show loading spinner
+            document.getElementById('loadingSpinner').style.display = 'flex';
+            document.getElementById('resultContainer').style.display = 'none';
+
+            try {
+                // Create FormData object from form
+                const formData = new FormData(document.getElementById('churnForm'));
+
+                // Make POST request to predict endpoint
+                const response = await fetch('/predict', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const data = await response.json();
+
+                // Hide loading spinner
+                document.getElementById('loadingSpinner').style.display = 'none';
+
+                // Display result
+                displayResult(data);
+            } catch (error) {
+                document.getElementById('loadingSpinner').style.display = 'none';
+                displayError(error.message);
+            }
+        }
+
+        // Display prediction result
+        function displayResult(data) {
+            const resultCard = document.getElementById('resultCard');
+            const resultContainer = document.getElementById('resultContainer');
+
+            if (data.status) {
+                const predictionClass = data.prediction === 'Churn' ? 'churn' : 'stay';
+                const icon = data.prediction === 'Churn' ? '⚠️' : '✓';
+                const backgroundColor = data.prediction === 'Churn' ? '#fee' : '#efe';
+                const borderColor = data.prediction === 'Churn' ? '#ff6b6b' : '#51cf66';
+
+                resultCard.innerHTML = `
+                    <div class="prediction-result ${predictionClass}" style="background-color: ${backgroundColor}; border-left: 5px solid ${borderColor};">
+                        <div class="result-icon">${icon}</div>
+                        <div class="result-content">
+                            <h3>Prediction: ${data.prediction}</h3>
+                            <p>${data.message}</p>
+                        </div>
+                    </div>
+                `;
+            } else {
+                resultCard.innerHTML = `
+                    <div class="prediction-result error" style="background-color: #fee; border-left: 5px solid #ff6b6b;">
+                        <div class="result-icon">❌</div>
+                        <div class="result-content">
+                            <h3>Error</h3>
+                            <p>${data.message}</p>
+                        </div>
+                    </div>
+                `;
+            }
+
+            resultContainer.style.display = 'block';
+        }
+
+        // Display error message
+        function displayError(message) {
+            const resultCard = document.getElementById('resultCard');
+            const resultContainer = document.getElementById('resultContainer');
+
+            resultCard.innerHTML = `
+                <div class="prediction-result error" style="background-color: #fee; border-left: 5px solid #ff6b6b;">
+                    <div class="result-icon">❌</div>
+                    <div class="result-content">
+                        <h3>Error</h3>
+                        <p>${message}</p>
+                    </div>
+                </div>
+            `;
+
+            resultContainer.style.display = 'block';
+        }
+
+        // Train model function
+        async function trainModel() {
+            if (!confirm('Training the model will take some time. Do you want to proceed?')) {
+                return;
+            }
+
+            const button = event.target;
+            button.disabled = true;
+            button.textContent = 'Training...';
+
+            try {
+                const response = await fetch('/train');
+                const result = await response.text();
+                alert(result);
+            } catch (error) {
+                alert('Error training model: ' + error.message);
+            } finally {
+                button.disabled = false;
+                button.textContent = 'Train Model';
+            }
+        }
+    </script>
+</body>
+</html>
