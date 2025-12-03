@@ -21,4 +21,4 @@ uvicorn
 jinja2
 imblearn
 streamlit
--e .
+# -e .
